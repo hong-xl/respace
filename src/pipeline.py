@@ -179,8 +179,8 @@ def main(args):
 
 	respace = ReSpace()
 
-	do_sample_custom(respace)
-	exit()
+	# do_sample_custom(respace)
+	# exit()
 
 	all_seeds_cnt_is_success = defaultdict(int)
 	for rand_seed in rand_seeds:
