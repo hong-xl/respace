@@ -3,6 +3,7 @@ import time
 from openai import OpenAI
 import concurrent.futures
 import threading
+from dotenv import load_dotenv
 from tqdm import tqdm
 import numpy as np
 
@@ -77,7 +78,9 @@ def process_entry(args):
         print(f"Error processing entry {idx}: {str(e)}")
 
 def create_lookup_table(input_file, output_file, num_threads=16, test_mode=True):
-    openai_client = OpenAI(api_key="sk-proj-n0LSwBDfjFbxT6Xx4KkwT3BlbkFJM1qUnlM8RaaXcO5A6TCz")
+
+    load_dotenv(".env.local")
+    openai_client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
     
     # Load data
     with open(input_file, 'r') as f:
