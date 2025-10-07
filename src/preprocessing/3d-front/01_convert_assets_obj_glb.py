@@ -5,6 +5,7 @@ from tqdm import tqdm
 from pathlib import Path
 import sys
 from contextlib import contextmanager
+from dotenv import load_dotenv
 
 # distutils.dir_util.copy_tree(obj_id, tgt_pth)
 # exit()
