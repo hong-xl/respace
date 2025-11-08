@@ -61,7 +61,7 @@ python ./src/preprocessing/3d-front/01_convert_assets_obj_glb.py
 python ./src/preprocessing/3d-front/scale_assets.py
 ```
 
-Finally, we need to pre-compute and cache the embeddings and size properties for the asset calog so the sampling engine can work with this cache. You can use an existing version of this cache, assuming no modification to the asset catalog has been taken. The file is available here: <a href="https://drive.google.com/file/d/1T-4cwzNrR2MAAPyxsHrcNhNHh4HXc4vY/view?usp=sharing">https://drive.google.com/file/d/1T-4cwzNrR2MAAPyxsHrcNhNHh4HXc4vY/view?usp=sharing</a>. Make sure the file is located under ```./data/metadata/model_info_3dfuture_assets_embeds.pickle``` and is ~174MB. If you want to run the cache compilation from scratch, you can run:
+Finally, we need to pre-compute and cache the embeddings and size properties for the asset calog so the sampling engine can work with this cache. You can use an existing version of this cache, assuming no modification to the asset catalog has been taken. The file is available here: <a href="https://drive.google.com/file/d/1T-4cwzNrR2MAAPyxsHrcNhNHh4HXc4vY">https://drive.google.com/file/d/1T-4cwzNrR2MAAPyxsHrcNhNHh4HXc4vY</a>. Make sure the file is located under ```./data/metadata/model_info_3dfuture_assets_embeds.pickle``` and is ~174MB. If you want to run the cache compilation from scratch, you can run:
 
 ```bash
 python ./src/preprocessing/3d-front/06_compute_embeds.py
@@ -194,7 +194,17 @@ Before starting training, you might need to ask for permission for the model che
 
 ## 📈 Evaluation
 
-You will need to set the correct model checkpoints under the MODEL_ID env variable for the evals. You can also use our existing weights released via <a href="https://huggingface.co/gradient-spaces/respace-sg-llm-1.5b">https://huggingface.co/gradient-spaces/respace-sg-llm-1.5b</a>
+You will need to set the correct model checkpoints under the MODEL_ID env variable for the evals (if you trained your own SG-LLM). You can also use our existing weights (released via <a href="https://huggingface.co/gradient-spaces/respace-sg-llm-1.5b">https://huggingface.co/gradient-spaces/respace-sg-llm-1.5b</a>; they get automatically pulled if you don't modify the ReSpace module path inside ```respace.py```).
+
+If you want to use our method as a baseline or build up on it, you can run the evaluation scripts below. Please note that by default the full evaluation on all three datasetes is enabled. It will be better to uncomment the sections that you don't want to run for better controllability, e.g. first only evaluate on bedrooms etc.
+
+If you did not modify the datasets (and want to compare to our method as-is with the same room types), before you run the evalution scripts, you need to download a ZIP file that contains renderings from the ground-truth dataset for each room type split. The file is available here: <a href="https://drive.google.com/file/d/1UB42LsE715McfDqsLDgtxHKCAUiPIGrn">https://drive.google.com/file/d/1UB42LsE715McfDqsLDgtxHKCAUiPIGrn</a>.
+
+Make sure you unzip the file, rename the folder to "viz" and locate the folder under ```./eval/viz``` such that the subfolders are like ```./eval/viz/3d-front-train-full-scenes-all```.
+
+Now, look into the evaluation shell scripts below and uncomment the room types that you don't want to run. Additionally, you can modify the BON_LLM parameter for Best-of-N sampling (and other params for the full scenes).
+
+If you want to use the default weights via HF for SG-LLM (and not your custom trained one), then drop the CLI flag in the shell script, i.e. remove ```--model-id=$MODEL_ID``` completely from the line where ```pipeline.py``` is listed. This will trigger the pipeline to take the model from HF instead of a local one.
 
 ### Single Object Addition
 The following bash script contains all evaluation scripts for addition and removal. Check out the script and uncomment the ones you do not want to run.
