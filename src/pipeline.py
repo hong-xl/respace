@@ -134,9 +134,10 @@ def main(args):
 	# 	do_removal_only=args.do_removal_test,
 	# )
 
-	respace = ReSpace(
-		model_id=model_id
-	)
+	if model_id is not None:
+		respace = ReSpace(model_id=model_id)
+	else:
+		respace = ReSpace()
 
 	# do_sample_custom(respace)
 	# exit()
